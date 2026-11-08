@@ -410,3 +410,172 @@ Para dotar al sistema de la paleta oficial del **Tecnológico Nacional de Méxic
    - **Base Font Family:** `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
    - **Container Border Radius:** `10px`
 4. Haz clic en **Save As** con el nombre `Tec Laguna Theme` y luego en **Set as Current**.
+
+
+---
+
+# Fase 3: Funcionalidad de Sistema Real
+
+En esta fase se incorporan herramientas de valor institucional indispensables para la gestión escolar: Kardex oficial imprimible en PDF, boleta de calificaciones por ciclo, listas de asistencia para docentes, buscador global, semáforo de riesgo académico y auditoría transaccional con triggers.
+
+### 3.1 Kardex Estudiantil Imprimible en PDF (Página 30)
+Para que el reporte de Kardex cumpla con el estándar oficial de una constancia académica:
+
+1. **Ejecución del Script de Reportes:**
+   - En **SQL Workshop** > **SQL Scripts**, sube y ejecuta [`db/reportes_academicos.sql`](file:///C:/Users/isael/.gemini/antigravity/scratch/sistema-escolar-apex/db/reportes_academicos.sql).
+2. **Encabezado Institucional del Kardex (Región Static Content):**
+   - Agrega en la parte superior de la Página 30 una región con template `Blank with Attributes` y el siguiente HTML:
+     ```html
+     <div class="kardex-print-header">
+       <div class="kardex-logos">
+         <img src="https://tl-mexico.org/wp-content/uploads/2021/04/logo-tecnm.png" alt="TecNM" style="height: 48px;" />
+         <img src="https://itlaguna.edu.mx/wp-content/uploads/2020/09/LOGOTIPO-ITL-OFICIAL-PNG.png" alt="ITL" style="height: 48px;" />
+       </div>
+       <div class="kardex-meta-institucional">
+         <h2>TECNOLÓGICO NACIONAL DE MÉXICO</h2>
+         <h3>INSTITUTO TECNOLÓGICO DE LA LAGUNA</h3>
+         <p>DEPARTAMENTO DE SERVICIOS ESCOLARES • HISTORIAL ACADÉMICO OFICIAL</p>
+       </div>
+     </div>
+     ```
+3. **Resumen del Alumno (Región Cards o Badge List):**
+   - **Source:**
+     ```sql
+     SELECT 
+         n_control,
+         alumno,
+         curp,
+         promedio_general,
+         creditos_acumulados,
+         creditos_totales_cursados,
+         avance_porcentaje
+     FROM v_rep_kardex_alumno
+     WHERE n_control = :P30_N_CONTROL
+       AND ROWNUM = 1;
+     ```
+4. **Detalle de Asignaturas Cursadas (Interactive Report o Classic Report):**
+   - **Source:**
+     ```sql
+     SELECT 
+         ciclo AS "Ciclo Escolar",
+         clave_materia AS "Clave",
+         materia AS "Asignatura",
+         creditos_materia AS "Créditos",
+         grupo AS "Grupo",
+         profesor AS "Catedrático",
+         calificacion AS "Calificación",
+         estatus_materia AS "Acreditación"
+     FROM v_rep_kardex_alumno
+     WHERE n_control = :P30_N_CONTROL
+     ORDER BY fecha_ini_ciclo ASC, clave_materia ASC;
+     ```
+5. **Botón de Impresión en PDF:**
+   - **Button Name:** `BTN_IMPRIMIR_KARDEX`
+   - **Label:** `Imprimir / Guardar en PDF`
+   - **Icon:** `fa-print`
+   - **Action:** `Defined by Dynamic Action` -> `Execute JavaScript Code`:
+     ```javascript
+     window.print();
+     ```
+   *(La hoja de estilo `static/app.css` oculta menús, botones de APEX y barras de herramientas al mandar a imprimir o guardar como PDF).*
+
+---
+
+### 3.2 Boleta de Evaluación Semestral por Alumno y Ciclo
+Permite emitir la boleta de calificaciones de un período semestral específico:
+1. Crea una región de reporte con la vista `v_rep_boleta_ciclo`.
+2. **SQL Query:**
+   ```sql
+   SELECT 
+       clave_materia AS "Clave",
+       materia AS "Asignatura",
+       creditos AS "Créditos",
+       grupo AS "Grupo",
+       profesor AS "Profesor",
+       calificacion AS "Calificación Final",
+       resultado AS "Resultado"
+   FROM v_rep_boleta_ciclo
+   WHERE n_control = :P31_N_CONTROL
+     AND id_ciclo = :P31_ID_CICLO;
+   ```
+3. Muestra en el pie de página el `promedio_ciclo` y los `creditos_aprobados_ciclo` calculados analíticamente en la vista.
+
+---
+
+### 3.3 Lista de Asistencia por Grupo (Imprimible o Exportable a Excel)
+1. En la página de detalle de un grupo (o un modal auxiliar):
+2. **Type:** `Interactive Report`
+3. **Source:**
+   ```sql
+   SELECT 
+       numero_lista AS "#",
+       n_control AS "No. Control",
+       alumno_nombre_completo AS "Nombre del Estudiante",
+       mail AS "Correo Institucional",
+       telefono AS "Teléfono",
+       ' ' AS "Firma / Asistencia"
+   FROM v_rep_lista_asistencia
+   WHERE id_grupo = :P25_ID_GRUPO
+   ORDER BY numero_lista ASC;
+   ```
+4. En **Attributes** > **Download**, habilita los formatos **PDF** y **XLSX**.
+
+---
+
+### 3.4 Búsqueda Global en la Barra Superior (Page 0)
+Para buscar alumnos rápidamente desde cualquier lugar de la aplicación sin abrir primero la tabla de Alumnos:
+1. En **Page 0 (Global Page)**, agrega una región de búsqueda en la posición `After Navigation Bar` o `Menu Bar`.
+2. Crea el item: `P0_BUSQUEDA_GLOBAL`.
+   - **Type:** `Text Field with Autocomplete` (o Text Field normal con botón Buscar).
+   - **Icon:** `fa-search`.
+   - **Placeholder:** `Buscar alumno por nombre, matrícula o CURP...`.
+3. Crea una Rama (Branch) o Acción Dinámica que al presionar Enter redirija a la Página 21 (`ALUMNOS`) pasando el valor a un filtro de búsqueda:
+   ```sql
+   SELECT n_control, alumno, curp, promedio_general, estatus
+   FROM v_busqueda_global_alumnos
+   WHERE texto_busqueda LIKE '%' || UPPER(TRIM(:P0_BUSQUEDA_GLOBAL)) || '%';
+   ```
+
+---
+
+### 3.5 Semáforo de Riesgo Académico
+Para que los coordinadores identifiquen a los alumnos que requieren tutoría o intervención inmediata:
+1. **Regla de Clasificación Automática (definida en `v_alumnos_semaforo_riesgo`):**
+   - **Rojo (Riesgo Alto):** Alumnos con promedio general menor a 70.0, estatus inactivo o con 2 o más materias reprobadas.
+   - **Amarillo (Riesgo Medio):** Alumnos con promedio entre 70.0 y 79.99 (rendimiento en observación).
+   - **Verde (Riesgo Bajo):** Alumnos al corriente con promedio superior o igual a 80.0.
+2. **Visualización en Reportes:**
+   En el Interactive Report de Alumnos (Página 21), agrega la columna `SEMAFORO_HTML` con la opción **Escape special characters** en `No` para renderizar el badge de alerta.
+
+---
+
+### 3.6 Auditoría y Trazabilidad Transaccional
+Para cumplir con los más altos estándares de control y auditoría en sistemas de información escolar:
+
+1. **Ejecución del Script de Auditoría:**
+   - En **SQL Workshop** > **SQL Scripts**, sube y ejecuta [`db/auditoria.sql`](file:///C:/Users/isael/.gemini/antigravity/scratch/sistema-escolar-apex/db/auditoria.sql).
+2. **Columnas de Autoría Automática:**
+   Las tablas `alumnos`, `profesores`, `calificaciones`, `grupos`, `materias`, `aulas` y `ciclos` cuentan con:
+   - `creado_por`: Usuario de APEX que creó el registro.
+   - `fecha_creacion`: Fecha y hora de alta en el sistema.
+   - `modificado_por`: Último usuario que modificó el registro.
+   - `fecha_modificacion`: Fecha y hora de la última modificación.
+3. **Bitácora de Modificaciones a Calificaciones:**
+   - Cualquier inserción, cambio de nota o eliminación en la tabla `calificaciones` es interceptado automáticamente por el trigger `trg_bitacora_calificaciones`.
+   - Se almacena el usuario de APEX, la dirección IP, la fecha/hora exacta, la calificación previa y la calificación nueva.
+4. **Reporte de Bitácora para Supervisión:**
+   Crea una página o pestaña tipo **Interactive Report** para consulta administrativa:
+   ```sql
+   SELECT 
+       fecha_registro AS "Fecha",
+       operacion_badge_html AS "Operación",
+       usuario AS "Usuario Responsable",
+       n_control AS "No. Control",
+       alumno AS "Estudiante",
+       clave_materia || ' - ' || materia AS "Asignatura",
+       grupo AS "Grupo",
+       calificacion_anterior AS "Calificación Anterior",
+       calificacion_nueva AS "Calificación Nueva",
+       ip_origen AS "IP de Conexión"
+   FROM v_bitacora_calificaciones;
+   ```
