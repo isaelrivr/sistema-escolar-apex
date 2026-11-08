@@ -270,3 +270,143 @@ FROM v_dash_materias_demanda;
 ```
 * **Attributes:**
   - En la columna `Estatus Demanda`, desactiva **Escape special characters** para renderizar la etiqueta HTML con estilo.
+
+
+---
+
+# Fase 2: Pulido de Interfaz y Navegación
+
+En esta fase se garantiza una experiencia de usuario institucional, profesional y 100% en español, eliminando inconsistencias visuales, íconos erróneos e interfaces en inglés.
+
+### 2.1 Estandarización del Menú de Navegación e Iconografía
+Los íconos y textos del menú lateral y de hamburguesa se han unificado de forma coherente. Si configuras la aplicación directamente en **Shared Components** > **Lists** > **Navigation Menu**, verifica la siguiente correspondencia:
+
+| Opción de Menú | Ícono FontAwesome | Tipo / Destino | Descripción |
+| :--- | :--- | :--- | :--- |
+| **Inicio** | `fa-home` | Página 1 (`HOGAR`) | Dashboard analítico institucional |
+| **Alumnos** | `fa-users` | Página 21 | Reporte interactivo del padrón escolar |
+| **Profesores** | `fa-graduation-cap` | Página 19 | Catálogo de la plantilla docente |
+| **Materias** | `fa-book` | Página 15 | Catálogo de asignaturas y créditos |
+| **Grupos** | `fa-cubes` | Página 25 | Asignación de grupos por ciclo |
+| **Aulas** | `fa-door-open` | Página 13 | *Corrige el ícono erróneo `fa-alert`* |
+| **Ciclos** | `fa-calendar` | Página 11 | Ciclos escolares y períodos vigentes |
+| **Mapa de Alumnos** | `fa-map-marker` | Página 23 | Georreferenciación de estudiantes |
+| **Captura de Calificaciones** | `fa-edit` | Página 28 | Interactive Grid de evaluación semestral |
+| **Kardex** | `fa-file-text-o` | Página 30 | Historial y constancias académicas |
+| **Estados** | `fa-map` | Página 9 | Entidades federativas |
+| **Municipios** | `fa-building-o` | Página 17 | Municipios y localidades |
+| **Administración** | `fa-user-wrench` | Página 10000 | Configuración interna |
+
+---
+
+### 2.2 Unificación de Títulos de Páginas y Formularios
+Para mantener una jerarquía gramatical correcta, los listados de consulta van en **plural** y las pantallas de formulario DML van en **singular**:
+
+* **Página 19:** `Profesores` (Listado)
+* **Página 20:** `Profesor` (Formulario modal: Nombre, Apellidos, Dirección, Municipio, Correo, Teléfono)
+* **Página 21:** `Alumnos` (Listado)
+* **Página 22:** `Alumno` (Formulario modal: Matrícula, Nombre, CURP, Contacto, Estatus)
+* **Página 23:** `Mapa de Alumnos`
+* **Página 25:** `Grupos`
+* **Página 27:** `Inscripciones`
+* **Página 28:** `Captura de Calificaciones`
+* **Página 30:** `Kardex del Alumno`
+
+---
+
+### 2.3 Página de Login Institucional (Página 9999)
+Configuración de la pantalla de bienvenida y autenticación:
+1. **Page Title:** `Sistema Escolar — Tecnológico de La Laguna`
+2. **Region Name:** `Sistema Escolar — Tecnológico de La Laguna`
+3. **Subtítulo institucional:** `Plataforma de Gestión y Analítica Académica`
+4. **Campos del formulario:**
+   - `P9999_USERNAME`: Etiqueta y placeholder: `Usuario`.
+   - `P9999_PASSWORD`: Etiqueta y placeholder: `Contraseña`.
+   - `P9999_REMEMBER`: Etiqueta: `Recordar usuario`.
+   - Botón `LOGIN`: Etiqueta: `Iniciar Sesión` (Ícono: `fa-sign-in`).
+
+---
+
+### 2.4 Estandarización de Botones de Acción
+Todas las páginas de formulario DML y reportes utilizan los verbos estándar en español:
+* **Crear:** Para altas y nuevas inserciones (`p_button_name => 'CREATE'`, Etiqueta: `Crear`).
+* **Guardar:** Para actualizaciones (`p_button_name => 'SAVE'`, Etiqueta: `Guardar`).
+* **Cancelar:** Para cerrar modales sin guardar (`p_button_name => 'CANCEL'`, Etiqueta: `Cancelar`).
+* **Eliminar:** Para bajas lógicas o físicas con confirmación (`p_button_name => 'DELETE'`, Etiqueta: `Eliminar`).
+
+---
+
+### 2.5 Reglas de Validación en Español
+En los formularios de Alumnos (Página 22), Profesores (Página 20) y Captura de Calificaciones (Página 28), se crean las siguientes validaciones nativas de APEX:
+
+#### 1. Validación de Formato Oficial de CURP (Página 22)
+* **Name:** `VAL_CURP_FORMATO`
+* **Type:** `Item matches Regular Expression`
+* **Item:** `P22_CURP`
+* **Regular Expression:** `^[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9A-Z][0-9]$`
+* **Error Message:** `La CURP ingresada no cumple con la estructura oficial de 18 caracteres de la RENAPO.`
+
+#### 2. Validación de Correo Electrónico Institucional Único (Página 22 y 20)
+* **Name:** `VAL_ALUMNO_CORREO_UNICO`
+* **Type:** `Rows returned does NOT exist`
+* **SQL Query:**
+```sql
+SELECT 1 
+FROM alumnos 
+WHERE UPPER(mail) = UPPER(:P22_MAIL) 
+  AND n_control != NVL(:P22_N_CONTROL, '0');
+```
+* **Error Message:** `El correo electrónico ya se encuentra registrado para otro estudiante.`
+
+#### 3. Validación de Calificación en Rango Escolar 0 a 100 (Página 28)
+* **Name:** `VAL_RANGO_CALIFICACION`
+* **Type:** `Item in range`
+* **Item:** `CALIFICACION`
+* **Minimum Value:** `0`
+* **Maximum Value:** `100`
+* **Error Message:** `La calificación debe estar comprendida dentro de la escala oficial de 0.00 a 100.00.`
+
+---
+
+### 2.6 Configuración de Filtros en Cascada (Cascading LOV) Estado -> Municipio
+Para evitar que un usuario seleccione un municipio que no corresponda al estado del alumno o profesor, se implementa una lista dependiente en cascada:
+
+1. **Item de Estado (`P22_ID_ESTADO_NACIMIENTO`):**
+   - **Type:** `Select List`
+   - **List of Values > Type:** `SQL Query`
+   - **Query:**
+     ```sql
+     SELECT nombre AS d, id_estado AS r 
+     FROM estados 
+     ORDER BY nombre;
+     ```
+
+2. **Item de Municipio (`P22_ID_MUNICIPIO`):**
+   - **Type:** `Select List`
+   - **Cascading LOV Parent Item(s):** `P22_ID_ESTADO_NACIMIENTO`
+   - **Page Items to Submit:** `P22_ID_ESTADO_NACIMIENTO`
+   - **List of Values > SQL Query:**
+     ```sql
+     SELECT nombre AS d, id_municipio AS r 
+     FROM municipios 
+     WHERE id_estado = :P22_ID_ESTADO_NACIMIENTO 
+     ORDER BY nombre;
+     ```
+   - **Parent Required:** `Yes` (o deshabilitado hasta que se elija un estado).
+
+---
+
+### 2.7 Configuración del Tema Institucional en Theme Roller
+Para dotar al sistema de la paleta oficial del **Tecnológico Nacional de México (TecNM)** y del **Instituto Tecnológico de La Laguna (ITL)** sin depender de reglas CSS sueltas:
+
+1. Ejecuta la aplicación y abre la barra de desarrollador inferior de APEX.
+2. Haz clic en **Theme Roller** (Paleta de colores).
+3. Configura los siguientes parámetros oficiales:
+   - **Header Accent:** `#0f172a` (Pizarra Oscuro Ejecutivo)
+   - **Primary Accent:** `#1b365d` (Azul TecNM Oficial)
+   - **Secondary Accent:** `#b8860b` (Dorado Tecnológico / Engrane ITL)
+   - **Success Accent:** `#2f7d5b` (Verde Laguna)
+   - **Body Background:** `#f8fafc` (Gris tenue institucional)
+   - **Base Font Family:** `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
+   - **Container Border Radius:** `10px`
+4. Haz clic en **Save As** con el nombre `Tec Laguna Theme` y luego en **Set as Current**.
