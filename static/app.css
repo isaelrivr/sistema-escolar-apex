@@ -1,0 +1,157 @@
+/**
+ * Sistema Escolar Pro — Tecnológico de La Laguna
+ * Archivo: static/app.css
+ * Descripción: Estilos globales de la aplicación, optimización para impresión de
+ *              reportes oficiales en PDF (Kardex, Boletas, Asistencias) y semáforo de riesgo.
+ * Carga: Shared Components -> User Interface Attributes -> Cascading Style Sheets -> File URLs
+ *        (#APP_FILES#app.css)
+ */
+
+/* ==========================================================================
+   1. Estilos Globales y Badges de Semáforo de Riesgo
+   ========================================================================== */
+.t-Badge--subtle {
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.t-Badge--danger.t-Badge--subtle {
+  background-color: #fee2e2 !important;
+  color: #991b1b !important;
+  border: 1px solid #f87171 !important;
+}
+
+.t-Badge--warning.t-Badge--subtle {
+  background-color: #fef3c7 !important;
+  color: #92400e !important;
+  border: 1px solid #fcd34d !important;
+}
+
+.t-Badge--success.t-Badge--subtle {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+  border: 1px solid #86efac !important;
+}
+
+.t-Badge--info.t-Badge--subtle {
+  background-color: #e0f2fe !important;
+  color: #075985 !important;
+  border: 1px solid #7dd3fc !important;
+}
+
+/* ==========================================================================
+   2. Formato Institucional de Documentos Académicos (Kardex y Boletas)
+   ========================================================================== */
+.kardex-print-header {
+  background: #ffffff;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kardex-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.kardex-meta-institucional {
+  text-align: right;
+}
+
+.kardex-meta-institucional h2 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #1b365d;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.kardex-meta-institucional h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #b8860b;
+  margin: 0.2rem 0;
+}
+
+.kardex-meta-institucional p {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   3. Optimización para Impresión y Generación de PDF (@media print)
+   ========================================================================== */
+@media print {
+  /* Ocultar interfaz de navegación, barra superior, menú hamburguesa y botones */
+  .t-Header,
+  .t-Header-branding,
+  .t-Header-nav,
+  .t-Body-nav,
+  .t-Body-actions,
+  .t-Footer,
+  .t-BreadcrumbRegion-buttons,
+  .a-DevToolbar,
+  .t-Button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ajustar márgenes para papel tamaño Carta */
+  @page {
+    size: letter portrait;
+    margin: 1.5cm;
+  }
+
+  body, .t-Body, .t-Body-content {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* El encabezado oficial se mantiene visible y nítido */
+  .kardex-print-header {
+    border: none !important;
+    border-bottom: 2px solid #1b365d !important;
+    border-radius: 0 !important;
+    padding: 0 0 1rem 0 !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  /* Evitar saltos de página a mitad de filas en tablas */
+  table, tr, td, th {
+    page-break-inside: avoid !important;
+  }
+
+  /* Forzar contraste nítido en bordes de tablas */
+  .t-Report-report, .a-IRR-table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  .t-Report-report th, .a-IRR-table th {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    font-size: 8.5pt !important;
+  }
+
+  .t-Report-report td, .a-IRR-table td {
+    border: 1px solid #e2e8f0 !important;
+    font-size: 8.5pt !important;
+    padding: 4px 6px !important;
+  }
+}

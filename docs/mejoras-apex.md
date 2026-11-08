@@ -579,3 +579,92 @@ Para cumplir con los más altos estándares de control y auditoría en sistemas 
        ip_origen AS "IP de Conexión"
    FROM v_bitacora_calificaciones;
    ```
+
+
+---
+
+# Fase 4: Rendimiento, Optimización y Mantenimiento
+
+En esta fase se abordan el rendimiento de la aplicación al manejar más de 600 registros de alumnos, la optimización del mapa geográfico y el diagnóstico de páginas de administración internas.
+
+### 4.1 Paginación y Optimización de Consultas (Página 21 - Alumnos)
+Dado que el padrón supera los 600 registros y seguirá creciendo:
+1. **Interactive Report / Grid de Alumnos (Página 21):**
+   - En **Attributes** > **Pagination**:
+     - **Type:** `Row Range X to Y of Z (with pagination)`
+     - **Rows Per Page:** `25` o `50` (evita cargar los 600+ registros de golpe en el DOM del navegador).
+   - En **Filtros por Defecto (Default Report Settings):**
+     - Guarda como reporte primario un filtro con `Activo = 'S'` para que al abrir la pantalla solo consulte a los estudiantes vigentes, reduciendo el volumen inicial de datos.
+
+---
+
+### 4.2 Optimización del Mapa Georreferenciado (Página 23)
+1. Para el componente **Map** de APEX:
+   - Limita los puntos iniciales a alumnos activos con coordenadas válidas:
+     ```sql
+     SELECT 
+         n_control,
+         nombre || ' ' || apellidos AS alumno,
+         direccion,
+         latitud,
+         longitud
+     FROM alumnos
+     WHERE latitud IS NOT NULL 
+       AND longitud IS NOT NULL
+       AND activo = 'S';
+     ```
+   - Habilita la opción **Clustering** (Agrupación por proximidad) en los atributos de la capa del mapa. Esto reduce el cálculo de renderizado de 600 marcadores individuales a unos pocos clústeres regionales en La Laguna (Torreón, Gómez Palacio, Lerdo).
+
+---
+
+### 4.3 Diagnóstico y Propuesta sobre Páginas de Administración (10010 a 10014)
+APEX genera automáticamente un conjunto de páginas técnicas para la gestión de control de acceso:
+
+| ID Página | Nombre de la Página | Tipo | Propósito |
+| :--- | :--- | :--- | :--- |
+| **10000** | Administration | Normal | Panel de control administrativo interno |
+| **10010** | Configure Access Control | Modal | Habilitar o deshabilitar esquemas de autorización |
+| **10011** | Manage User Access | Normal | Reporte interactivo de usuarios y roles asignados |
+| **10012** | Manage User Access | Modal | Formulario DML para asignar roles a un usuario |
+| **10013** | Add Multiple Users - Step 1 | Modal | Asistente (paso 1) para dar de alta usuarios en lote |
+| **10014** | Add Multiple Users - Step 2 | Modal | Asistente (paso 2) para confirmar roles en lote |
+
+#### Dictamen Técnico y Recomendación:
+> [!IMPORTANT]
+> **NO BORRAR ESTAS PÁGINAS.**  
+> Borrar las páginas 10010 a 10014 puede generar referencias rotas en los metadatos de APEX si en el futuro se desea habilitar seguridad por roles.  
+> **Recomendación idónea:**
+> 1. En **Shared Components** > **Lists** > **Navigation Menu**, retira o desvincula la opción `ADMINISTRATION` del menú lateral para que los maestros o usuarios comunes no la vean.
+> 2. Mantén las páginas en la aplicación intactas, accesibles únicamente para el desarrollador ingresando `10000` directamente en la URL.
+
+---
+
+# Checklist Resumen para el Administrador
+
+Sigue este orden exacto en Oracle APEX para dejar tu aplicación lista al 100%:
+
+### 1. En SQL Workshop > SQL Scripts
+- [ ] Ejecutar [`db/dashboard_vistas.sql`](file:///C:/Users/isael/.gemini/antigravity/scratch/sistema-escolar-apex/db/dashboard_vistas.sql) (Crea las 22 vistas analíticas de KPIs y gráficas).
+- [ ] Ejecutar [`db/reportes_academicos.sql`](file:///C:/Users/isael/.gemini/antigravity/scratch/sistema-escolar-apex/db/reportes_academicos.sql) (Crea las vistas para Kardex, Boletas, Asistencia, Búsqueda y Semáforo de Riesgo).
+- [ ] Ejecutar [`db/auditoria.sql`](file:///C:/Users/isael/.gemini/antigravity/scratch/sistema-escolar-apex/db/auditoria.sql) (Agrega columnas de autoría, triggers automáticos y bitácora de calificaciones).
+
+### 2. En Shared Components > Static Application Files
+- [ ] Subir [`static/dashboard.css`](file:///C:/Users/isael/.gemini/antigravity/scratch/sistema-escolar-apex/static/dashboard.css).
+- [ ] Subir [`static/app.css`](file:///C:/Users/isael/.gemini/antigravity/scratch/sistema-escolar-apex/static/app.css).
+
+### 3. En Propiedades de la Aplicación (User Interface)
+- [ ] En **CSS File URLs**, incluir:
+  ```text
+  #APP_FILES#app.css
+  ```
+- [ ] En **Page 1 (Hogar)** > CSS File URLs, incluir:
+  ```text
+  #APP_FILES#dashboard.css
+  ```
+- [ ] En **Theme Roller**, aplicar los colores institucionales: `#0f172a` (Header), `#1b365d` (Primario), `#b8860b` (Secundario/Oro), `#2f7d5b` (Éxito).
+
+### 4. En App Builder (Páginas Clave)
+- [ ] **Página 1 (Dashboard):** Reemplazar el código de prueba por las regiones de Cards y Charts conectadas a las vistas de `db/dashboard_vistas.sql` (Ver instrucciones detalladas en la Fase 1).
+- [ ] **Página 22 (Alumno):** Configurar la lista en cascada `P22_ID_ESTADO_NACIMIENTO` -> `P22_ID_MUNICIPIO` (Ver Fase 2).
+- [ ] **Página 28 (Calificaciones):** Agregar la validación de rango 0 a 100.
+- [ ] **Página 30 (Kardex):** Integrar el botón con `window.print()` y encabezado con logos.
