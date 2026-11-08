@@ -1,7 +1,9 @@
 /**
  * Sistema Escolar Pro — Tecnológico de La Laguna
  * Archivo: static/dashboard.css
- * Descripción: Estilos visuales ejecutivos para el Dashboard de la Página 1 en Oracle APEX.
+ * Descripción: Estilos visuales institucionales para el Dashboard de la Página 1 en Oracle APEX.
+ *              Aplica la identidad cromática oficial: Azul TecNM (#1B3A6B), Azul profundo (#12284A),
+ *              Dorado Tec Laguna (#C2A96F), Dorado oscuro (#A08A52) y Carbón (#282828).
  * Carga recomendada: Shared Components -> Static Application Files (#APP_FILES#dashboard.css)
  */
 
@@ -9,31 +11,32 @@
    1. Lienzo General y Tipografía del Dashboard
    ========================================================================== */
 .t-Body-content {
-  background-color: #f8fafc !important;
+  background-color: var(--tec-fondo, #F3F5F9) !important;
 }
 
 #sep-executive-dashboard {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: #1e293b;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--tec-carbon, #282828);
   max-width: 100%;
   margin: 0 auto;
 }
 
 /* ==========================================================================
-   2. Banner Hero Institucional (Color Sólido Oscuro #0f172a)
+   2. Banner Hero Institucional (Azul TecNM #1B3A6B con Franja Dorada #C2A96F)
    ========================================================================== */
 .sep-hero-banner {
-  background-color: #0f172a !important;
-  background-image: none !important;
-  border-radius: 16px;
+  background-color: #1B3A6B !important;
+  background-image: linear-gradient(135deg, #1B3A6B 0%, #12284A 100%) !important;
+  border-radius: 14px;
   padding: 1.75rem 2.25rem;
   margin-bottom: 2rem;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
-  border: 1px solid #1e293b;
+  box-shadow: 0 10px 25px -5px rgba(27, 58, 107, 0.28);
+  border: 1px solid #12284A;
+  border-bottom: 3px solid #C2A96F !important;
   position: relative;
   overflow: hidden;
 }
@@ -53,9 +56,9 @@
 
 .sep-hero-subtitle {
   font-size: 1.15rem;
-  color: #94a3b8;
+  color: #DFCE9F !important;
   margin: 0;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
@@ -63,16 +66,16 @@
 .sep-hero-logos {
   background: #ffffff;
   border-radius: 12px;
-  padding: 0.65rem 1.25rem;
+  padding: 0.6rem 1.25rem;
   display: flex;
   align-items: center;
   gap: 1.25rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(194, 169, 111, 0.3);
 }
 
 .sep-hero-logos img {
-  height: 52px;
+  height: 50px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -81,7 +84,7 @@
 .sep-hero-logos .logo-divider {
   width: 1px;
   height: 38px;
-  background-color: #e2e8f0;
+  background-color: #C2A96F;
 }
 
 @media (max-width: 768px) {
@@ -102,7 +105,7 @@
 .sep-section-title {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #1B3A6B;
   margin: 2rem 0 1rem 0;
   display: flex;
   align-items: center;
@@ -112,10 +115,11 @@
 
 .sep-section-title span.fa {
   font-size: 1.15rem;
+  color: #C2A96F;
 }
 
 /* ==========================================================================
-   4. Tarjetas de Acceso Rápido (Launcher Modules)
+   4. Tarjetas de Acceso Rápido (Launcher Modules en Azul y Dorado)
    ========================================================================== */
 .sep-actions-grid {
   display: grid;
@@ -133,7 +137,7 @@
   align-items: center;
   text-align: center;
   text-decoration: none !important;
-  color: #0f172a;
+  color: #282828;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   border: 1px solid #e2e8f0;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -141,9 +145,9 @@
 
 .sep-action-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.1);
-  border-color: #3b82f6;
-  color: #1d4ed8;
+  box-shadow: 0 12px 24px -4px rgba(27, 58, 107, 0.15);
+  border-color: #1B3A6B;
+  color: #1B3A6B;
 }
 
 .sep-action-icon {
@@ -174,13 +178,13 @@
   font-weight: 500;
 }
 
-/* Paleta de colores para accesos rápidos */
-.sep-action-blue .sep-action-icon { background: rgba(59, 130, 246, 0.12); color: #2563eb; }
-.sep-action-emerald .sep-action-icon { background: rgba(16, 185, 129, 0.12); color: #059669; }
-.sep-action-amber .sep-action-icon { background: rgba(245, 158, 11, 0.12); color: #d97706; }
-.sep-action-purple .sep-action-icon { background: rgba(139, 92, 246, 0.12); color: #7c3aed; }
-.sep-action-rose .sep-action-icon { background: rgba(244, 63, 94, 0.12); color: #e11d48; }
-.sep-action-cyan .sep-action-icon { background: rgba(6, 182, 212, 0.12); color: #0891b2; }
+/* Variaciones cromáticas oficiales (Azul TecNM & Dorado Tec Laguna) */
+.sep-action-blue .sep-action-icon { background: rgba(27, 58, 107, 0.12); color: #1B3A6B; }
+.sep-action-gold .sep-action-icon { background: rgba(194, 169, 111, 0.18); color: #A08A52; }
+.sep-action-blue-mid .sep-action-icon { background: rgba(63, 95, 146, 0.14); color: #3F5F92; }
+.sep-action-deep .sep-action-icon { background: rgba(18, 40, 74, 0.12); color: #12284A; }
+.sep-action-gold-light .sep-action-icon { background: rgba(194, 169, 111, 0.22); color: #C2A96F; }
+.sep-action-blue-soft .sep-action-icon { background: rgba(124, 147, 184, 0.16); color: #7C93B8; }
 
 /* ==========================================================================
    5. Tarjetas de Indicadores Clave (Executive KPI Cards)
@@ -208,7 +212,7 @@
 
 .sep-kpi-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 20px rgba(27, 58, 107, 0.08);
 }
 
 .sep-kpi-card::before {
@@ -220,11 +224,16 @@
   width: 5px;
 }
 
-.sep-kpi-card.blue::before { background-color: #3b82f6; }
+/* Bordes institucionales */
+.sep-kpi-card.gold::before { background-color: #C2A96F; }
+.sep-kpi-card.blue::before { background-color: #1B3A6B; }
+.sep-kpi-card.deep::before { background-color: #12284A; }
+.sep-kpi-card.gold-dark::before { background-color: #A08A52; }
+
+/* Semánticos para estados y riesgos */
 .sep-kpi-card.green::before { background-color: #10b981; }
 .sep-kpi-card.amber::before { background-color: #f59e0b; }
-.sep-kpi-card.purple::before { background-color: #8b5cf6; }
-.sep-kpi-card.rose::before { background-color: #f43f5e; }
+.sep-kpi-card.rose::before { background-color: #ef4444; }
 
 .sep-kpi-label {
   font-size: 0.82rem;
@@ -238,7 +247,7 @@
 .sep-kpi-value {
   font-size: 2.15rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #1B3A6B;
   letter-spacing: -0.03em;
   line-height: 1.1;
   margin-bottom: 0.35rem;
@@ -257,106 +266,178 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
+  font-size: 1.55rem;
   flex-shrink: 0;
 }
 
 /* ==========================================================================
-   6. Contenedores de Gráficas y Analítica (Cards & Chart Blocks)
+   6. Widgets Analíticos (Gráficas de Azules y Dorado)
    ========================================================================== */
-.sep-charts-grid-2 {
+.sep-analytics-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 1.75rem;
+  margin-bottom: 2rem;
 }
 
-.sep-charts-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 1.75rem;
-}
-
-@media (max-width: 1024px) {
-  .sep-charts-grid-2, .sep-charts-grid-3 {
+@media (max-width: 640px) {
+  .sep-analytics-grid {
     grid-template-columns: 1fr;
   }
 }
 
-.sep-chart-card {
+.sep-widget-card {
   background: #ffffff;
   border-radius: 14px;
-  padding: 1.5rem;
+  padding: 1.65rem;
   border: 1px solid #e2e8f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
-.sep-chart-header {
+.sep-widget-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #f1f5f9;
   padding-bottom: 0.85rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
-.sep-chart-title {
+.sep-widget-title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #1B3A6B;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.sep-chart-badge {
+.sep-widget-badge {
   font-size: 0.75rem;
   font-weight: 600;
-  background: #f1f5f9;
-  color: #475569;
+  background: rgba(27, 58, 107, 0.08);
+  color: #1B3A6B;
   padding: 0.25rem 0.65rem;
   border-radius: 6px;
+  border: 1px solid rgba(27, 58, 107, 0.15);
+}
+
+/* Barras de progreso regional (Dorado principal y gama de azules) */
+.sep-bar-item {
+  margin-bottom: 1.1rem;
+}
+
+.sep-bar-item:last-child {
+  margin-bottom: 0;
+}
+
+.sep-bar-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #282828;
+  margin-bottom: 0.35rem;
+}
+
+.sep-bar-meta .count {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.sep-bar-track {
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.sep-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.8s ease-in-out;
+}
+
+/* Donut widget layout */
+.sep-donut-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.5rem 0;
+}
+
+.sep-donut-svg {
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+}
+
+.sep-donut-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.sep-legend-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.sep-legend-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #282828;
+}
+
+.sep-legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
 }
 
 /* ==========================================================================
-   7. Badges y Etiquetas de Estado
+   7. Tabla de Asignaturas con Mayor Demanda
    ========================================================================== */
-.t-Badge--alta-demanda {
-  background-color: #fee2e2 !important;
-  color: #b91c1c !important;
-  border: 1px solid #fca5a5 !important;
-  font-weight: 700 !important;
-  padding: 0.3rem 0.75rem !important;
-  border-radius: 9999px !important;
+.sep-table-widget {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
 }
 
-.t-Badge--regular {
-  background-color: #e0f2fe !important;
-  color: #0369a1 !important;
-  border: 1px solid #bae6fd !important;
-  font-weight: 600 !important;
-  padding: 0.3rem 0.75rem !important;
-  border-radius: 9999px !important;
+.sep-table-widget th {
+  text-align: left;
+  padding: 0.75rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1B3A6B;
+  background-color: #F3F5F9;
+  border-bottom: 2px solid #C2A96F;
 }
 
-.t-Badge--riesgo-alto {
-  background-color: #fee2e2 !important;
-  color: #dc2626 !important;
-  border: 1px solid #f87171 !important;
-  font-weight: 700 !important;
+.sep-table-widget td {
+  padding: 0.85rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #282828;
 }
 
-.t-Badge--riesgo-medio {
-  background-color: #fef3c7 !important;
-  color: #d97706 !important;
-  border: 1px solid #fcd34d !important;
-  font-weight: 600 !important;
+.sep-table-widget tr:hover td {
+  background-color: rgba(27, 58, 107, 0.02);
 }
 
-.t-Badge--riesgo-bajo {
-  background-color: #dcfce7 !important;
-  color: #15803d !important;
-  border: 1px solid #86efac !important;
-  font-weight: 600 !important;
+.sep-table-widget tr:last-child td {
+  border-bottom: none;
+}
+
+/* Ocultar elementos obsoletos */
+.t-Body-contentInner > .t-Cards,
+.t-Body-contentInner > .t-BadgeList,
+.t-Region--badges,
+.t-BadgeList {
+  display: none !important;
 }

@@ -1,14 +1,217 @@
 /**
  * Sistema Escolar Pro — Tecnológico de La Laguna
  * Archivo: static/app.css
- * Descripción: Estilos globales de la aplicación, optimización para impresión de
- *              reportes oficiales en PDF (Kardex, Boletas, Asistencias) y semáforo de riesgo.
+ * Descripción: Tokens de diseño institucional (TecNM / ITL), estilos globales del sistema,
+ *              estilización de la pantalla de Login, optimización para reportes oficiales
+ *              en PDF (Kardex, Boletas, Asistencias) y semáforo de riesgo académico.
  * Carga: Shared Components -> User Interface Attributes -> Cascading Style Sheets -> File URLs
  *        (#APP_FILES#app.css)
  */
 
 /* ==========================================================================
-   1. Estilos Globales y Badges de Semáforo de Riesgo
+   1. Tokens de Diseño Institucional (:root)
+   ========================================================================== */
+:root {
+  /* Identidad Oficial TecNM / Tecnológico de La Laguna */
+  --tec-azul: #1B3A6B;          /* Azul TecNM (primario) */
+  --tec-azul-oscuro: #12284A;   /* Azul profundo institucional (hover / hero) */
+  --tec-dorado: #C2A96F;        /* Dorado Tec Laguna (acento oficial) */
+  --tec-dorado-oscuro: #A08A52; /* Dorado oscuro (hover acentos) */
+  --tec-dorado-claro: #DFCE9F;  /* Dorado tenue para subtítulos */
+  --tec-carbon: #282828;        /* Color principal de texto */
+  --tec-fondo: #F3F5F9;         /* Fondo neutro claro del sistema */
+  --tec-tarjeta: #FFFFFF;       /* Fondo de contenedores y tarjetas */
+
+  /* Serie Cromática para Gráficas Analíticas */
+  --chart-blue-1: #1B3A6B;
+  --chart-blue-2: #3F5F92;
+  --chart-blue-3: #7C93B8;
+  --chart-blue-4: #B7C3D8;
+  --chart-gold: #C2A96F;
+
+  /* Estados Semánticos Suaves */
+  --sem-verde-bg: #dcfce7;
+  --sem-verde-txt: #166534;
+  --sem-verde-border: #86efac;
+  --sem-ambar-bg: #fef3c7;
+  --sem-ambar-txt: #92400e;
+  --sem-ambar-border: #fcd34d;
+  --sem-rojo-bg: #fee2e2;
+  --sem-rojo-txt: #991b1b;
+  --sem-rojo-border: #f87171;
+}
+
+/* ==========================================================================
+   2. Estilos Globales del Sistema (Universal Theme Overrides)
+   ========================================================================== */
+body, .t-Body {
+  background-color: var(--tec-fondo) !important;
+  color: var(--tec-carbon) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+/* Barra Superior Institucional (Header) */
+.t-Header,
+.t-Header-branding {
+  background-color: var(--tec-azul) !important;
+  border-bottom: 2px solid var(--tec-dorado) !important;
+  color: #ffffff !important;
+}
+
+.t-Header-logoText {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.t-Header-nav .t-Button {
+  color: #ffffff !important;
+}
+
+/* Menú de Navegación Lateral (Tree Nav) */
+.t-Body-nav {
+  background-color: var(--tec-azul) !important;
+  border-right: 1px solid var(--tec-azul-oscuro) !important;
+}
+
+.t-TreeNav .a-TreeView-node--topLevel > .a-TreeView-content {
+  color: #f1f5f9 !important;
+  font-weight: 500 !important;
+}
+
+.t-TreeNav .a-TreeView-node--topLevel > .a-TreeView-content:hover,
+.t-TreeNav .a-TreeView-node--topLevel > .a-TreeView-content.is-hover {
+  background-color: var(--tec-azul-oscuro) !important;
+  color: var(--tec-dorado) !important;
+}
+
+.t-TreeNav .a-TreeView-node--topLevel > .a-TreeView-content.is-selected {
+  background-color: var(--tec-azul-oscuro) !important;
+  color: #ffffff !important;
+  border-left: 4px solid var(--tec-dorado) !important;
+}
+
+/* Botones Principales (Hot & Primary Buttons) */
+.t-Button--hot,
+.t-Button--primary {
+  background-color: var(--tec-azul) !important;
+  border: 1px solid var(--tec-dorado) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+.t-Button--hot:hover,
+.t-Button--primary:hover {
+  background-color: var(--tec-azul-oscuro) !important;
+  border-color: var(--tec-dorado-oscuro) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(27, 58, 107, 0.25) !important;
+}
+
+/* Enlaces Globales */
+a {
+  color: var(--tec-azul);
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--tec-azul-oscuro);
+}
+
+/* Regiones y Tarjetas Estándar */
+.t-Region {
+  background-color: var(--tec-tarjeta) !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+.t-Region-header {
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.t-Region-title {
+  color: var(--tec-azul) !important;
+  font-weight: 700 !important;
+}
+
+/* ==========================================================================
+   3. Estilos de la Pantalla de Login Institucional (Página 9999)
+   ========================================================================== */
+body.t-PageBody--login {
+  background-color: var(--tec-fondo) !important;
+}
+
+.t-PageBody--login .t-Login-container {
+  background: transparent !important;
+}
+
+.t-PageBody--login .t-Login-region {
+  background-color: var(--tec-tarjeta) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 36px rgba(27, 58, 107, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 2.25rem !important;
+  max-width: 440px !important;
+  margin: 2rem auto !important;
+}
+
+/* Encabezado y Logo en Login */
+.t-PageBody--login .t-Login-header {
+  text-align: center !important;
+  padding-bottom: 1.25rem !important;
+  margin-bottom: 1.5rem !important;
+  border-bottom: 3px solid var(--tec-dorado) !important;
+}
+
+.t-PageBody--login .t-Login-logo {
+  max-width: 260px !important;
+  height: auto !important;
+  margin: 0 auto 1.25rem auto !important;
+  display: block !important;
+}
+
+.t-PageBody--login .t-Login-title {
+  color: var(--tec-azul) !important;
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 0 0.35rem 0 !important;
+}
+
+.t-PageBody--login .t-Login-body .t-Login-subTitle,
+.t-PageBody--login .t-Login-subtitle {
+  color: var(--tec-dorado-oscuro) !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+}
+
+/* Botón de Inicio de Sesión */
+.t-PageBody--login .t-Button--hot,
+.t-PageBody--login #login {
+  background-color: var(--tec-azul) !important;
+  border: 1.5px solid var(--tec-dorado) !important;
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+  box-shadow: 0 4px 12px rgba(27, 58, 107, 0.2) !important;
+}
+
+.t-PageBody--login .t-Button--hot:hover,
+.t-PageBody--login #login:hover {
+  background-color: var(--tec-azul-oscuro) !important;
+  border-color: var(--tec-dorado-oscuro) !important;
+  box-shadow: 0 6px 16px rgba(18, 40, 74, 0.3) !important;
+}
+
+/* ==========================================================================
+   4. Badges de Semáforo de Riesgo (Semánticos Suaves)
    ========================================================================== */
 .t-Badge--subtle {
   font-weight: 600;
@@ -17,24 +220,28 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  font-size: 0.8rem;
 }
 
-.t-Badge--danger.t-Badge--subtle {
-  background-color: #fee2e2 !important;
-  color: #991b1b !important;
-  border: 1px solid #f87171 !important;
+.t-Badge--danger.t-Badge--subtle,
+.badge-riesgo-alto {
+  background-color: var(--sem-rojo-bg) !important;
+  color: var(--sem-rojo-txt) !important;
+  border: 1px solid var(--sem-rojo-border) !important;
 }
 
-.t-Badge--warning.t-Badge--subtle {
-  background-color: #fef3c7 !important;
-  color: #92400e !important;
-  border: 1px solid #fcd34d !important;
+.t-Badge--warning.t-Badge--subtle,
+.badge-riesgo-medio {
+  background-color: var(--sem-ambar-bg) !important;
+  color: var(--sem-ambar-txt) !important;
+  border: 1px solid var(--sem-ambar-border) !important;
 }
 
-.t-Badge--success.t-Badge--subtle {
-  background-color: #dcfce7 !important;
-  color: #166534 !important;
-  border: 1px solid #86efac !important;
+.t-Badge--success.t-Badge--subtle,
+.badge-regular {
+  background-color: var(--sem-verde-bg) !important;
+  color: var(--sem-verde-txt) !important;
+  border: 1px solid var(--sem-verde-border) !important;
 }
 
 .t-Badge--info.t-Badge--subtle {
@@ -44,13 +251,14 @@
 }
 
 /* ==========================================================================
-   2. Formato Institucional de Documentos Académicos (Kardex y Boletas)
+   5. Formato Institucional de Documentos Académicos (Kardex, Boletas)
    ========================================================================== */
 .kardex-print-header {
-  background: #ffffff;
+  background: var(--tec-tarjeta);
   padding: 1.5rem 2rem;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
+  border-top: 4px solid var(--tec-azul);
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
@@ -70,7 +278,7 @@
 .kardex-meta-institucional h2 {
   font-size: 1.15rem;
   font-weight: 800;
-  color: #1b365d;
+  color: var(--tec-azul);
   margin: 0;
   letter-spacing: -0.01em;
 }
@@ -78,7 +286,7 @@
 .kardex-meta-institucional h3 {
   font-size: 1rem;
   font-weight: 700;
-  color: #b8860b;
+  color: var(--tec-dorado-oscuro);
   margin: 0.2rem 0;
 }
 
@@ -91,10 +299,9 @@
 }
 
 /* ==========================================================================
-   3. Optimización para Impresión y Generación de PDF (@media print)
+   6. Optimización para Impresión y Generación de PDF (@media print)
    ========================================================================== */
 @media print {
-  /* Ocultar interfaz de navegación, barra superior, menú hamburguesa y botones */
   .t-Header,
   .t-Header-branding,
   .t-Header-nav,
@@ -108,7 +315,6 @@
     display: none !important;
   }
 
-  /* Ajustar márgenes para papel tamaño Carta */
   @page {
     size: letter portrait;
     margin: 1.5cm;
@@ -122,21 +328,18 @@
     padding: 0 !important;
   }
 
-  /* El encabezado oficial se mantiene visible y nítido */
   .kardex-print-header {
     border: none !important;
-    border-bottom: 2px solid #1b365d !important;
+    border-bottom: 2px solid var(--tec-azul) !important;
     border-radius: 0 !important;
     padding: 0 0 1rem 0 !important;
     margin-bottom: 1.25rem !important;
   }
 
-  /* Evitar saltos de página a mitad de filas en tablas */
   table, tr, td, th {
     page-break-inside: avoid !important;
   }
 
-  /* Forzar contraste nítido en bordes de tablas */
   .t-Report-report, .a-IRR-table {
     border-collapse: collapse !important;
     width: 100% !important;

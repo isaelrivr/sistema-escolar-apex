@@ -39,11 +39,12 @@ El objetivo de esta fase es sustituir todo el HTML estático o JavaScript con da
 
 ---
 
-### 1.3 Región 1: Banner Hero Institucional con Identidad Oficial
-Crea o edita la región superior del Dashboard con los datos oficiales:
+### 1.3 Región 1: Banner Hero Institucional con Identidad Oficial TecNM / ITL
+Crea o edita la región superior del Dashboard aplicando la identidad visual institucional:
 * **Title:** `Hero Institucional`
 * **Type:** `Static Content`
 * **Template:** `Blank with Attributes`
+* **Color de Fondo:** Azul TecNM (`#1B3A6B`) con línea inferior dorada de 3px (`#C2A96F`)
 * **Source (HTML):**
 ```html
 <div class="sep-hero-banner">
@@ -52,9 +53,7 @@ Crea o edita la región superior del Dashboard con los datos oficiales:
     <div class="sep-hero-subtitle">Tecnológico de La Laguna</div>
   </div>
   <div class="sep-hero-logos">
-    <img src="https://tl-mexico.org/wp-content/uploads/2021/04/logo-tecnm.png" alt="TecNM" title="Tecnológico Nacional de México" />
-    <div class="logo-divider"></div>
-    <img src="https://itlaguna.edu.mx/wp-content/uploads/2020/09/LOGOTIPO-ITL-OFICIAL-PNG.png" alt="ITL" title="Instituto Tecnológico de La Laguna" />
+    <img src="#APP_FILES#TecNMX-1024x324.png" alt="TecNM — Instituto Tecnológico de La Laguna" title="Tecnológico Nacional de México / Instituto Tecnológico de La Laguna" />
   </div>
 </div>
 ```
@@ -315,11 +314,15 @@ Para mantener una jerarquía gramatical correcta, los listados de consulta van e
 ---
 
 ### 2.3 Página de Login Institucional (Página 9999)
-Configuración de la pantalla de bienvenida y autenticación:
+Configuración de la pantalla de bienvenida y autenticación bajo los estándares visuales del Tecnológico:
 1. **Page Title:** `Sistema Escolar — Tecnológico de La Laguna`
 2. **Region Name:** `Sistema Escolar — Tecnológico de La Laguna`
-3. **Subtítulo institucional:** `Plataforma de Gestión y Analítica Académica`
-4. **Campos del formulario:**
+3. **Subtítulo institucional:** `Tecnológico de La Laguna`
+4. **Fondo de la página:** Fondo claro `#F3F5F9`.
+5. **Tarjeta de autenticación:** Tarjeta centrada en color blanco `#FFFFFF` con sombra suave.
+6. **Logotipo:** Centrado, utilizando `#APP_FILES#TecNMX-1024x324.png` (`p_region_image`), con una franja dorada de 3px (`#C2A96F`) debajo del encabezado.
+7. **Botón Iniciar Sesión (`LOGIN`):** Fondo en azul TecNM `#1B3A6B`, borde dorado `#C2A96F` y efecto hover en azul profundo `#12284A`.
+8. **Campos del formulario:**
    - `P9999_USERNAME`: Etiqueta y placeholder: `Usuario`.
    - `P9999_PASSWORD`: Etiqueta y placeholder: `Contraseña`.
    - `P9999_REMEMBER`: Etiqueta: `Recordar usuario`.
@@ -396,20 +399,79 @@ Para evitar que un usuario seleccione un municipio que no corresponda al estado 
 
 ---
 
-### 2.7 Configuración del Tema Institucional en Theme Roller
-Para dotar al sistema de la paleta oficial del **Tecnológico Nacional de México (TecNM)** y del **Instituto Tecnológico de La Laguna (ITL)** sin depender de reglas CSS sueltas:
+### 2.7 Configuración del Tema Institucional en Theme Roller y Tokens CSS
 
+El sistema adopta íntegramente la paleta oficial del **Tecnológico de La Laguna (TecNM)** extraída del logotipo institucional (`static/TecNMX-1024x324.png`):
+
+| Token Institucional | Valor Hex | Uso en la Aplicación |
+| :--- | :--- | :--- |
+| **Azul TecNM (primario)** | `#1B3A6B` | Encabezado superior, menú lateral, botones primarios, títulos y enlaces |
+| **Azul profundo (hover/hero)** | `#12284A` | Fondo del hero banner, estado hover de botones y navegación activa |
+| **Dorado Tec Laguna (acento)** | `#C2A96F` | Franja inferior del hero (3px), bordes de botones, acento en gráficas |
+| **Dorado oscuro (hover acentos)** | `#A08A52` | Subtítulo en login, hover de acentos dorados, íconos de capacidad |
+| **Dorado claro** | `#DFCE9F` | Subtítulo "Tecnológico de La Laguna" en el hero banner del home |
+| **Carbón (texto)** | `#282828` | Tipografía principal y datos de lectura en tablas y formularios |
+| **Fondo de página** | `#F3F5F9` | Fondo claro neutro en todo el sistema y en la pantalla de login |
+| **Tarjetas y Contenedores** | `#FFFFFF` | Fondo de regiones, tarjetas de KPIs, módulos y modales |
+
+#### Valores Exactos para Theme Roller (Captura en APEX):
 1. Ejecuta la aplicación y abre la barra de desarrollador inferior de APEX.
-2. Haz clic en **Theme Roller** (Paleta de colores).
-3. Configura los siguientes parámetros oficiales:
-   - **Header Accent:** `#0f172a` (Pizarra Oscuro Ejecutivo)
-   - **Primary Accent:** `#1b365d` (Azul TecNM Oficial)
-   - **Secondary Accent:** `#b8860b` (Dorado Tecnológico / Engrane ITL)
-   - **Success Accent:** `#2f7d5b` (Verde Laguna)
-   - **Body Background:** `#f8fafc` (Gris tenue institucional)
-   - **Base Font Family:** `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
+2. Haz clic en **Theme Roller** (ícono de paleta de colores).
+3. Captura los siguientes valores en los selectores correspondientes:
+   - **Header / Menú:** `#1B3A6B`
+   - **Primary Accent (Color Primary):** `#1B3A6B`
+   - **Secondary Accent (Acentos):** `#C2A96F`
+   - **Body Background:** `#F3F5F9`
+   - **Card / Region Background:** `#FFFFFF`
+   - **Text Primary (Carbón):** `#282828`
+   - **Base Font Family:** `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`
    - **Container Border Radius:** `10px`
-4. Haz clic en **Save As** con el nombre `Tec Laguna Theme` y luego en **Set as Current**.
+4. Haz clic en **Save As** con el nombre `Tec Laguna Oficial` y luego en **Set as Current**.
+
+#### Variables CSS Definidas en `static/app.css` (`:root`):
+```css
+:root {
+  --tec-azul: #1B3A6B;          /* Azul TecNM primario */
+  --tec-azul-oscuro: #12284A;   /* Azul profundo hover / hero */
+  --tec-dorado: #C2A96F;        /* Dorado Tec Laguna acento */
+  --tec-dorado-oscuro: #A08A52; /* Dorado oscuro hover */
+  --tec-dorado-claro: #DFCE9F;  /* Dorado tenue subtítulos */
+  --tec-carbon: #282828;        /* Color principal de texto */
+  --tec-fondo: #F3F5F9;         /* Fondo neutro del sistema */
+  --tec-tarjeta: #FFFFFF;       /* Fondo de tarjetas */
+
+  /* Serie Cromática de Azules y Dorado para Gráficas */
+  --chart-blue-1: #1B3A6B;      /* Azul principal */
+  --chart-blue-2: #3F5F92;      /* Azul medio */
+  --chart-blue-3: #7C93B8;      /* Azul suave */
+  --chart-blue-4: #B7C3D8;      /* Azul claro */
+  --chart-gold: #C2A96F;        /* Dorado para resaltar el dato principal */
+}
+```
+
+---
+
+### 2.8 Carga del Logotipo Institucional y Configuración de Barra Superior
+
+El logotipo oficial [`static/TecNMX-1024x324.png`](file:///C:/Users/isael/.gemini/antigravity/scratch/sistema-escolar-apex/static/TecNMX-1024x324.png) unifica el escudo del ITL y el emblema nacional del TecNM:
+
+#### Paso 1: Subida del Archivo a Static Application Files
+1. En APEX App Builder, ingresa a la aplicación **107**.
+2. Ve a **Shared Components** > **Static Application Files** (Archivos de aplicación estáticos).
+3. Haz clic en **Create File** (o **Upload File**).
+4. Selecciona el archivo `static/TecNMX-1024x324.png` desde tu equipo local.
+5. Haz clic en **Upload**.
+6. Verifica que la referencia quede registrada como: `#APP_FILES#TecNMX-1024x324.png`.
+
+#### Paso 2: Configuración del Application Logo en la Barra Superior
+1. Ve a **Shared Components** > **User Interface Attributes** (Atributos de interfaz de usuario).
+2. En la pestaña **User Interface**, ubica la sección **Logo**.
+3. Configura:
+   - **Logo Type:** `Image`
+   - **Image URL:** `#APP_FILES#TecNMX-1024x324.png`
+   - **Logo Alt Text:** `Tecnológico de La Laguna — TecNM`
+   - **Logo Attributes:** `style="max-height: 38px; width: auto;"`
+4. Haz clic en **Apply Changes**.
 
 
 ---
