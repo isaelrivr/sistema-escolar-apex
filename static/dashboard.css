@@ -1,0 +1,362 @@
+/**
+ * Sistema Escolar Pro — Tecnológico de La Laguna
+ * Archivo: static/dashboard.css
+ * Descripción: Estilos visuales ejecutivos para el Dashboard de la Página 1 en Oracle APEX.
+ * Carga recomendada: Shared Components -> Static Application Files (#APP_FILES#dashboard.css)
+ */
+
+/* ==========================================================================
+   1. Lienzo General y Tipografía del Dashboard
+   ========================================================================== */
+.t-Body-content {
+  background-color: #f8fafc !important;
+}
+
+#sep-executive-dashboard {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #1e293b;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   2. Banner Hero Institucional (Color Sólido Oscuro #0f172a)
+   ========================================================================== */
+.sep-hero-banner {
+  background-color: #0f172a !important;
+  background-image: none !important;
+  border-radius: 16px;
+  padding: 1.75rem 2.25rem;
+  margin-bottom: 2rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+  border: 1px solid #1e293b;
+  position: relative;
+  overflow: hidden;
+}
+
+.sep-hero-content {
+  flex: 1;
+}
+
+.sep-hero-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.35rem 0;
+  color: #ffffff !important;
+  line-height: 1.2;
+}
+
+.sep-hero-subtitle {
+  font-size: 1.15rem;
+  color: #94a3b8;
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Tarjeta de Logotipos Oficiales */
+.sep-hero-logos {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 0.65rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sep-hero-logos img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.sep-hero-logos .logo-divider {
+  width: 1px;
+  height: 38px;
+  background-color: #e2e8f0;
+}
+
+@media (max-width: 768px) {
+  .sep-hero-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem;
+  }
+  .sep-hero-logos {
+    align-self: flex-start;
+  }
+}
+
+/* ==========================================================================
+   3. Títulos de Sección
+   ========================================================================== */
+.sep-section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 2rem 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  letter-spacing: -0.01em;
+}
+
+.sep-section-title span.fa {
+  font-size: 1.15rem;
+}
+
+/* ==========================================================================
+   4. Tarjetas de Acceso Rápido (Launcher Modules)
+   ========================================================================== */
+.sep-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.sep-action-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.35rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none !important;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sep-action-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.1);
+  border-color: #3b82f6;
+  color: #1d4ed8;
+}
+
+.sep-action-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.45rem;
+  margin-bottom: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.sep-action-card:hover .sep-action-icon {
+  transform: scale(1.1);
+}
+
+.sep-action-name {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.sep-action-desc {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Paleta de colores para accesos rápidos */
+.sep-action-blue .sep-action-icon { background: rgba(59, 130, 246, 0.12); color: #2563eb; }
+.sep-action-emerald .sep-action-icon { background: rgba(16, 185, 129, 0.12); color: #059669; }
+.sep-action-amber .sep-action-icon { background: rgba(245, 158, 11, 0.12); color: #d97706; }
+.sep-action-purple .sep-action-icon { background: rgba(139, 92, 246, 0.12); color: #7c3aed; }
+.sep-action-rose .sep-action-icon { background: rgba(244, 63, 94, 0.12); color: #e11d48; }
+.sep-action-cyan .sep-action-icon { background: rgba(6, 182, 212, 0.12); color: #0891b2; }
+
+/* ==========================================================================
+   5. Tarjetas de Indicadores Clave (Executive KPI Cards)
+   ========================================================================== */
+.sep-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.sep-kpi-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.5rem 1.65rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sep-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.sep-kpi-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+}
+
+.sep-kpi-card.blue::before { background-color: #3b82f6; }
+.sep-kpi-card.green::before { background-color: #10b981; }
+.sep-kpi-card.amber::before { background-color: #f59e0b; }
+.sep-kpi-card.purple::before { background-color: #8b5cf6; }
+.sep-kpi-card.rose::before { background-color: #f43f5e; }
+
+.sep-kpi-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
+}
+
+.sep-kpi-value {
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 0.35rem;
+}
+
+.sep-kpi-sub {
+  font-size: 0.82rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.sep-kpi-icon-box {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   6. Contenedores de Gráficas y Analítica (Cards & Chart Blocks)
+   ========================================================================== */
+.sep-charts-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.sep-charts-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+@media (max-width: 1024px) {
+  .sep-charts-grid-2, .sep-charts-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sep-chart-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.sep-chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.sep-chart-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sep-chart-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   7. Badges y Etiquetas de Estado
+   ========================================================================== */
+.t-Badge--alta-demanda {
+  background-color: #fee2e2 !important;
+  color: #b91c1c !important;
+  border: 1px solid #fca5a5 !important;
+  font-weight: 700 !important;
+  padding: 0.3rem 0.75rem !important;
+  border-radius: 9999px !important;
+}
+
+.t-Badge--regular {
+  background-color: #e0f2fe !important;
+  color: #0369a1 !important;
+  border: 1px solid #bae6fd !important;
+  font-weight: 600 !important;
+  padding: 0.3rem 0.75rem !important;
+  border-radius: 9999px !important;
+}
+
+.t-Badge--riesgo-alto {
+  background-color: #fee2e2 !important;
+  color: #dc2626 !important;
+  border: 1px solid #f87171 !important;
+  font-weight: 700 !important;
+}
+
+.t-Badge--riesgo-medio {
+  background-color: #fef3c7 !important;
+  color: #d97706 !important;
+  border: 1px solid #fcd34d !important;
+  font-weight: 600 !important;
+}
+
+.t-Badge--riesgo-bajo {
+  background-color: #dcfce7 !important;
+  color: #15803d !important;
+  border: 1px solid #86efac !important;
+  font-weight: 600 !important;
+}
